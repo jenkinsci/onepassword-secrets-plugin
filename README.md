@@ -10,7 +10,7 @@ This plugin loads secrets from [1Password Connect](https://1password.com/secrets
 
 This plugin relies on the 1Password CLI. Therefore, you can install it on your host by running the following script:
 ```shell
-curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.1-beta.01/op_linux_amd64_v2.7.1-beta.01.zip
+curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
 unzip -o op.zip
 rm op.zip
 ```
@@ -23,7 +23,7 @@ pipeline {
     stages {
         stage('Install 1Password CLI') {
             sh '''
-            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.1-beta.01/op_linux_amd64_v2.7.1-beta.01.zip
+            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
             unzip -o op.zip
             rm op.zip
             '''
@@ -43,7 +43,7 @@ pipeline {
 node {
     stage('Install 1Password CLI') {
         sh '''
-        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.1-beta.01/op_linux_amd64_v2.7.1-beta.01.zip
+        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
         unzip -o op.zip
         rm op.zip
         '''
@@ -76,7 +76,7 @@ pipeline {
     stages {
         stage('Install 1Password CLI') {
             sh '''
-            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.1-beta.01/op_linux_amd64_v2.7.1-beta.01.zip
+            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
             unzip -o op.zip
             rm op.zip
             '''
@@ -92,7 +92,7 @@ pipeline {
 node {
     stage('Install 1Password CLI') {
         sh '''
-        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.1-beta.01/op_linux_amd64_v2.7.1-beta.01.zip
+        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
         unzip -o op.zip
         rm op.zip
         '''
