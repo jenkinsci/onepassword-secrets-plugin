@@ -1,0 +1,17 @@
+def config = [
+    connectHost: "OP_HOST",
+    connectCredentialId: "connect-credential-id"
+]
+
+def secrets = [
+    [envVar: 'DOCKER_USERNAME', secretRef: 'op://test-vault/docker/usernamez']
+]
+
+node {
+    sh 'curl -sSfLo op.zip OP_CLI_URL && unzip -o op.zip && rm op.zip'
+    withSecrets(config: config, secrets: secrets) {
+        sh '''
+            echo "We shall never get here"
+        '''
+    }
+}
