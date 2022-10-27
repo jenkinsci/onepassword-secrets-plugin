@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.41</version>
+        <version>4.48</version>
         <relativePath />
     </parent>
 
@@ -42,7 +42,7 @@
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
                 <artifactId>bom-2.346.x</artifactId>
-                <version>1595.v8c71c13cc3a_9</version>
+                <version>1654.vcb_69d035fa_20</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -107,10 +107,6 @@
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-support</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>scm-api</artifactId>
         </dependency>
     </dependencies>
 
