@@ -1,4 +1,4 @@
 <?jelly escape-by-default='true'?>
 <div>
-    TODO
+    Load secrets from 1Password into your pipeline
 </div>
