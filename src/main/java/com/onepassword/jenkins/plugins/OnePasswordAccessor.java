@@ -46,7 +46,7 @@ public class OnePasswordAccessor implements Serializable {
     // User-Agent values
     private static final String OPIntegrationName = "1Password Jenkins Plugin";
     private static final String OPIntegrationID = "JEN";
-    private static final String OPIntegrationBuildNumber = "1000001";
+    private static final String OPIntegrationBuildNumber = "0001001";
 
     public OnePasswordAccessor() {
         this.config = new OnePasswordConfig();
