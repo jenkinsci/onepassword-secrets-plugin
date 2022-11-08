@@ -10,6 +10,7 @@ import hudson.model.Descriptor;
 import hudson.model.Item;
 import hudson.security.ACL;
 import hudson.util.ListBoxModel;
+import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.plaincredentials.StringCredentials;
 import org.kohsuke.stapler.AncestorInPath;
@@ -144,12 +145,14 @@ public class OnePasswordConfig extends AbstractDescribableImpl<OnePasswordConfig
         }
 
         public ListBoxModel doFillConnectCredentialIdItems(@AncestorInPath Item item, @QueryParameter String uri) {
+            Jenkins.get().checkPermission(Jenkins.ADMINISTER);
             List<DomainRequirement> domainRequirements = URIRequirementBuilder.fromUri(uri).build();
             return new StandardListBoxModel().includeEmptyValue().includeAs(ACL.SYSTEM, item,
                     StringCredentials.class, domainRequirements);
         }
 
         public ListBoxModel doFillServiceAccountCredentialIdItems(@AncestorInPath Item item, @QueryParameter String uri) {
+            Jenkins.get().checkPermission(Jenkins.ADMINISTER);
             List<DomainRequirement> domainRequirements = URIRequirementBuilder.fromUri(uri).build();
             return new StandardListBoxModel().includeEmptyValue().includeAs(ACL.SYSTEM, item,
                     StringCredentials.class, domainRequirements);
