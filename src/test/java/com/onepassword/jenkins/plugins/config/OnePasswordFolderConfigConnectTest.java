@@ -21,41 +21,41 @@ import static com.onepassword.jenkins.plugins.util.TestConstants.*;
 
 public class OnePasswordFolderConfigConnectTest {
 
-//    @Rule
-//    public JenkinsRule j = new JenkinsRule();
-//
-//    private final String basePath = "src/test/resources/com/onepassword/jenkins/plugins/config/connect/";
-//
-//    private final StringCredentialsImpl c =
-//            new StringCredentialsImpl(
-//                    CredentialsScope.GLOBAL, "connect-credential-id",
-//                    "1Password Connect Credential", Secret.fromString(System.getenv("OP_TOKEN")));
-//
-//    @Before
-//    public void init() throws IOException {
-//        CredentialsProvider.lookupStores(j.jenkins)
-//                .iterator()
-//                .next()
-//                .addCredentials(Domain.global(), c);
-//    }
-//
-//    @Test
-//    public void testConfigFolder() throws Exception {
-//        Folder folder = j.createProject(Folder.class);
-//        OnePasswordConfig config = new OnePasswordConfig();
-//        config.setConnectHost(TEST_CONNECT_HOST);
-//        config.setConnectCredentialId("connect-credential-id");
-//        config.setConnectCredential(c);
-//        folder.addProperty(new OnePasswordFolderConfig(config));
-//
-//        WorkflowJob project = folder.createProject(WorkflowJob.class, "test-folder-config");
-//        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigFolder.groovy",
-//                Charset.defaultCharset())
-//                .replace("OP_CLI_URL", OP_CLI_URL),
-//                true));
-//
-//        WorkflowRun build = j.buildAndAssertSuccess(project);
-//        j.assertLogContains(TEST_SUCCESS, build);
-//        j.assertLogNotContains(TEST_FAILURE, build);
-//    }
+    @Rule
+    public JenkinsRule j = new JenkinsRule();
+
+    private final String basePath = "src/test/resources/com/onepassword/jenkins/plugins/config/connect/";
+
+    private final StringCredentialsImpl c =
+            new StringCredentialsImpl(
+                    CredentialsScope.GLOBAL, "connect-credential-id",
+                    "1Password Connect Credential", Secret.fromString(System.getenv("OP_TOKEN")));
+
+    @Before
+    public void init() throws IOException {
+        CredentialsProvider.lookupStores(j.jenkins)
+                .iterator()
+                .next()
+                .addCredentials(Domain.global(), c);
+    }
+
+    @Test
+    public void testConfigFolder() throws Exception {
+        Folder folder = j.createProject(Folder.class);
+        OnePasswordConfig config = new OnePasswordConfig();
+        config.setConnectHost(TEST_CONNECT_HOST);
+        config.setConnectCredentialId("connect-credential-id");
+        config.setConnectCredential(c);
+        folder.addProperty(new OnePasswordFolderConfig(config));
+
+        WorkflowJob project = folder.createProject(WorkflowJob.class, "test-folder-config");
+        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigFolder.groovy",
+                Charset.defaultCharset())
+                .replace("OP_CLI_URL", OP_CLI_URL),
+                true));
+
+        WorkflowRun build = j.buildAndAssertSuccess(project);
+        j.assertLogContains(TEST_SUCCESS, build);
+        j.assertLogNotContains(TEST_FAILURE, build);
+    }
 }
