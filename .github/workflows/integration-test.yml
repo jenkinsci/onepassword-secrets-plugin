@@ -1,8 +1,5 @@
 name: Maven CI for 1Password Connect Jenkins Plugin
-on:
-  push:
-    branches: main
-  pull_request:
+on: push
 
 jobs:
   verify:
