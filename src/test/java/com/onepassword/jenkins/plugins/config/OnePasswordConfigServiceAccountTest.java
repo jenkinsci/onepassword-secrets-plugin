@@ -134,8 +134,8 @@ public class OnePasswordConfigServiceAccountTest {
                 true));
 
         WorkflowRun build = j.buildAndAssertSuccess(project);
-        j.assertLogNotContains(TEST_SUCCESS, build);
-        j.assertLogContains(TEST_FAILURE, build);
+        j.assertLogContains(TEST_SUCCESS, build);
+        j.assertLogNotContains(TEST_FAILURE, build);
     }
 
     @Test
