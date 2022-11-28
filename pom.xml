@@ -28,7 +28,7 @@
         <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
         <jenkins.version>2.346.3</jenkins.version>
         <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
-        <skipIntegrationsTests>true</skipIntegrationsTests>
+        <exclude.tests>**/*Test.java</exclude.tests>
     </properties>
 
     <scm>
@@ -131,7 +131,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M7</version>
                 <configuration>
-                    <skipTests>${skipIntegrationsTests}</skipTests>
+                    <excludes>
+                        <exclude>${exclude.tests}</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>

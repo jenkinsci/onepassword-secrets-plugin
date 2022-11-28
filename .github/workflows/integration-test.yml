@@ -25,4 +25,4 @@ jobs:
         env:
           OP_TOKEN: ${{ secrets.OP_TOKEN }}
           OP_SA_TOKEN: ${{ secrets.OP_SA_TOKEN }}
-        run: mvn -q --batch-mode --update-snapshots -DskipIntegrationsTests=false verify
+        run: mvn -q --batch-mode --update-snapshots -Dexclude.tests="none" verify
