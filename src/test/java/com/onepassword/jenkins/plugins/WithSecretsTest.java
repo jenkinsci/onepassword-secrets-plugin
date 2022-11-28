@@ -21,89 +21,89 @@ import static com.onepassword.jenkins.plugins.util.TestConstants.*;
 
 public class WithSecretsTest {
 
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
-
-    private final String basePath = "src/test/resources/com/onepassword/jenkins/plugins/pipeline/";
-
-    private final StringCredentialsImpl c =
-            new StringCredentialsImpl(
-                    CredentialsScope.GLOBAL, "connect-credential-id",
-                    "1Password Connect Credential", Secret.fromString(System.getenv("OP_TOKEN")));
-
-    @Before
-    public void init() throws IOException {
-        CredentialsProvider.lookupStores(j.jenkins)
-                .iterator()
-                .next()
-                .addCredentials(Domain.global(), c);
-    }
-
-    @Test
-    public void testSecretsFunction() throws Exception {
-        WorkflowJob project = j.createProject(WorkflowJob.class);
-        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsFunction.groovy",
-                Charset.defaultCharset())
-                .replace("OP_HOST", TEST_CONNECT_HOST)
-                .replace("OP_CLI_URL", OP_CLI_URL),
-                true));
-        WorkflowRun build = j.buildAndAssertSuccess(project);
-        j.assertLogContains(TEST_SUCCESS, build);
-        j.assertLogNotContains(TEST_FAILURE, build);
-    }
-
-    @Test
-    public void testSecretsPipeline() throws Exception {
-        WorkflowJob project = j.createProject(WorkflowJob.class);
-        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsPipeline.groovy",
-                Charset.defaultCharset())
-                .replace("OP_HOST", TEST_CONNECT_HOST)
-                .replace("OP_CLI_URL",OP_CLI_URL),
-                true));
-
-        WorkflowRun build = j.buildAndAssertSuccess(project);
-        j.assertLogContains(TEST_SUCCESS, build);
-        j.assertLogNotContains(TEST_FAILURE, build);
-    }
-
-    @Test
-    public void testSecretsFromEnv() throws Exception {
-        WorkflowJob project = j.createProject(WorkflowJob.class);
-        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsFromEnv.groovy",
-                Charset.defaultCharset())
-                .replace("OP_HOST", TEST_CONNECT_HOST)
-                .replace("OP_CLI_URL", OP_CLI_URL),
-                true));
-
-        WorkflowRun build = j.buildAndAssertSuccess(project);
-        j.assertLogContains(TEST_SUCCESS, build);
-        j.assertLogNotContains(TEST_FAILURE, build);
-    }
-
-    @Test
-    public void testSecretsWrongReference() throws Exception {
-        WorkflowJob project = j.createProject(WorkflowJob.class);
-        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsWrongReference.groovy",
-                Charset.defaultCharset())
-                .replace("OP_HOST", TEST_CONNECT_HOST)
-                .replace("OP_CLI_URL", OP_CLI_URL),
-                true));
-
-        WorkflowRun build = j.buildAndAssertStatus(Result.FAILURE, project);
-        j.assertLogContains("Error retrieving secret op://test-vault/docker/usernamez:", build);
-        j.assertLogNotContains("We shall never get here", build);
-    }
-
-    @Test
-    public void testSecretsMasked() throws Exception {
-        WorkflowJob project = j.createProject(WorkflowJob.class);
-        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsMasked.groovy",
-                Charset.defaultCharset())
-                .replace("OP_HOST", TEST_CONNECT_HOST)
-                .replace("OP_CLI_URL", OP_CLI_URL),
-                true));
-
-        WorkflowRun build = j.buildAndAssertSuccess(project);
-        j.assertLogNotContains(TEST_SECRET, build);
-    }
+//    @Rule
+//    public JenkinsRule j = new JenkinsRule();
+//
+//    private final String basePath = "src/test/resources/com/onepassword/jenkins/plugins/pipeline/";
+//
+//    private final StringCredentialsImpl c =
+//            new StringCredentialsImpl(
+//                    CredentialsScope.GLOBAL, "connect-credential-id",
+//                    "1Password Connect Credential", Secret.fromString(System.getenv("OP_TOKEN")));
+//
+//    @Before
+//    public void init() throws IOException {
+//        CredentialsProvider.lookupStores(j.jenkins)
+//                .iterator()
+//                .next()
+//                .addCredentials(Domain.global(), c);
+//    }
+//
+//    @Test
+//    public void testSecretsFunction() throws Exception {
+//        WorkflowJob project = j.createProject(WorkflowJob.class);
+//        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsFunction.groovy",
+//                Charset.defaultCharset())
+//                .replace("OP_HOST", TEST_CONNECT_HOST)
+//                .replace("OP_CLI_URL", OP_CLI_URL),
+//                true));
+//        WorkflowRun build = j.buildAndAssertSuccess(project);
+//        j.assertLogContains(TEST_SUCCESS, build);
+//        j.assertLogNotContains(TEST_FAILURE, build);
+//    }
+//
+//    @Test
+//    public void testSecretsPipeline() throws Exception {
+//        WorkflowJob project = j.createProject(WorkflowJob.class);
+//        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsPipeline.groovy",
+//                Charset.defaultCharset())
+//                .replace("OP_HOST", TEST_CONNECT_HOST)
+//                .replace("OP_CLI_URL",OP_CLI_URL),
+//                true));
+//
+//        WorkflowRun build = j.buildAndAssertSuccess(project);
+//        j.assertLogContains(TEST_SUCCESS, build);
+//        j.assertLogNotContains(TEST_FAILURE, build);
+//    }
+//
+//    @Test
+//    public void testSecretsFromEnv() throws Exception {
+//        WorkflowJob project = j.createProject(WorkflowJob.class);
+//        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsFromEnv.groovy",
+//                Charset.defaultCharset())
+//                .replace("OP_HOST", TEST_CONNECT_HOST)
+//                .replace("OP_CLI_URL", OP_CLI_URL),
+//                true));
+//
+//        WorkflowRun build = j.buildAndAssertSuccess(project);
+//        j.assertLogContains(TEST_SUCCESS, build);
+//        j.assertLogNotContains(TEST_FAILURE, build);
+//    }
+//
+//    @Test
+//    public void testSecretsWrongReference() throws Exception {
+//        WorkflowJob project = j.createProject(WorkflowJob.class);
+//        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsWrongReference.groovy",
+//                Charset.defaultCharset())
+//                .replace("OP_HOST", TEST_CONNECT_HOST)
+//                .replace("OP_CLI_URL", OP_CLI_URL),
+//                true));
+//
+//        WorkflowRun build = j.buildAndAssertStatus(Result.FAILURE, project);
+//        j.assertLogContains("Error retrieving secret op://test-vault/docker/usernamez:", build);
+//        j.assertLogNotContains("We shall never get here", build);
+//    }
+//
+//    @Test
+//    public void testSecretsMasked() throws Exception {
+//        WorkflowJob project = j.createProject(WorkflowJob.class);
+//        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsMasked.groovy",
+//                Charset.defaultCharset())
+//                .replace("OP_HOST", TEST_CONNECT_HOST)
+//                .replace("OP_CLI_URL", OP_CLI_URL),
+//                true));
+//
+//        WorkflowRun build = j.buildAndAssertSuccess(project);
+//        j.assertLogNotContains(TEST_SECRET, build);
+//    }
 }
