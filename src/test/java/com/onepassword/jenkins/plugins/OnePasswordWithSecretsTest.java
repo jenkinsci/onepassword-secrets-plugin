@@ -19,7 +19,7 @@ import java.nio.charset.Charset;
 
 import static com.onepassword.jenkins.plugins.util.TestConstants.*;
 
-public class WithSecretsTest {
+public class OnePasswordWithSecretsTest {
 
     @Rule
     public JenkinsRule j = new JenkinsRule();
