@@ -22,4 +22,7 @@ jobs:
           java-version: '11'
           cache: 'maven'
       - name: Build with Maven
+        env:
+          OP_TOKEN: ${{ secrets.OP_TOKEN }}
+          OP_SA_TOKEN: ${{ secrets.OP_SA_TOKEN }}
         run: mvn -q --batch-mode --update-snapshots verify
