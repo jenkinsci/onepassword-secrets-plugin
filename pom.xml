@@ -4,8 +4,8 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.48</version>
-        <relativePath />
+        <version>4.50</version>
+        <relativePath/>
     </parent>
 
     <groupId>com.onepassword.jenkins.plugins</groupId>
@@ -26,7 +26,7 @@
         <revision>0.1.0</revision>
         <changelist>-SNAPSHOT</changelist>
         <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-        <jenkins.version>2.346.3</jenkins.version>
+        <jenkins.version>2.361.1</jenkins.version>
         <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
         <exclude.tests>**/OnePassword*.java</exclude.tests>
     </properties>
@@ -42,8 +42,8 @@
         <dependencies>
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
-                <artifactId>bom-2.346.x</artifactId>
-                <version>1654.vcb_69d035fa_20</version>
+                <artifactId>bom-2.361.x</artifactId>
+                <version>1678.vc1feb_6a_3c0f1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
