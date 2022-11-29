@@ -27,6 +27,7 @@
         <changelist>-SNAPSHOT</changelist>
         <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
         <jenkins.version>2.361.1</jenkins.version>
+        <java.level>11</java.level>
         <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
         <exclude.tests>**/OnePassword*.java</exclude.tests>
     </properties>
