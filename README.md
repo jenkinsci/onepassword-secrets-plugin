@@ -302,7 +302,7 @@ See the [examples](./docs/examples) directory for more examples and use cases.
 
 ## Requirements:
 * Maven > 3.3.9
-* Oracle JDK 1.8
+* Oracle JDK 11
 
 ## Security
 
