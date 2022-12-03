@@ -323,7 +323,7 @@ The secrets are available as environment variables.
 
 ## Requirements
 * Maven > 3.3.9
-* Oracle JDK > 11
+* Oracle JDK 11 or higher 
 
 ## Security
 
