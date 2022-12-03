@@ -4,18 +4,20 @@
 This plugin loads secrets from [1Password Connect](https://1password.com/secrets/) as environment variables into the Jenkins pipeline. The loaded secrets can only be accessed witin the scope of the plugin.
 
 ## Prerequisites
-- [1Password Connect](https://support.1password.com/secrets-automation/#step-2-deploy-a-1password-connect-server) deployed in your infrastructure
+- [1Password Connect](https://support.1password.com/secrets-automation/#step-2-deploy-a-1password-connect-server) deployed in your infrastructure.
 
 ## Install the 1Password CLI
 
-This plugin relies on the 1Password CLI. Therefore, you can install it on your host by running the following script:
+This plugin relies on the 1Password CLI. You need to [Install 1Password CLI](http://localhost:3010/docs/cli/get-started#install) on your host machine.
+
+Here's an example script to install the 1Password CLI version `2.8.0` on a Linux `amd64` host:
 ```shell
-curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
+curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.8.0/op_linux_amd64_v2.8.0.zip
 unzip -o op.zip
 rm op.zip
 ```
 
-If installed within the same pipeline, you need to add the script before any call to the plugin.
+If you plan to install 1Password CLI in the same pipeline where you'll use the plugin, you need to add the installation script before you make any calls to the plugin.
 
 ```groovy
 pipeline {
@@ -23,7 +25,7 @@ pipeline {
     stages {
         stage('Install 1Password CLI') {
             sh '''
-            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
+            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.8.0/op_linux_amd64_v2.8.0.zip
             unzip -o op.zip
             rm op.zip
             '''
@@ -43,7 +45,7 @@ pipeline {
 node {
     stage('Install 1Password CLI') {
         sh '''
-        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
+        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.8.0/op_linux_amd64_v2.8.0.zip
         unzip -o op.zip
         rm op.zip
         '''
@@ -56,7 +58,7 @@ node {
 
 </details>
 
-If installed in a separate build, you need to set the `1Password CLI path` to the workspace where the installation was made in your [config](#configuration).
+If you install 1Password CLI in a separate build, you need to set the `1Password CLI path` to the workspace where you performed the installation in you [configuration](#configuration).
 
 <details>
 <summary><b> Example installation via Freestyle Project</b></summary>
@@ -76,7 +78,7 @@ pipeline {
     stages {
         stage('Install 1Password CLI') {
             sh '''
-            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
+            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.8.0/op_linux_amd64_v2.8.0.zip
             unzip -o op.zip
             rm op.zip
             '''
@@ -92,7 +94,7 @@ pipeline {
 node {
     stage('Install 1Password CLI') {
         sh '''
-        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.7.2/op_linux_amd64_v2.7.2.zip
+        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.8.0/op_linux_amd64_v2.8.0.zip
         unzip -o op.zip
         rm op.zip
         '''
@@ -102,43 +104,41 @@ node {
 </details>
 </details>
 
-## Plugin usage
+See the most recent [1Password CLI release](https://app-updates.agilebits.com/product_history/CLI2).
 
-### Configuration
+## Configuration
 
-You can configure the plugin on three different levels:
-- Global: in your global config
-- Folder-level: on the folder your job is running in
-- Job level: either on your freestyle project job or directly in the Jenkinsfile
+You can configure the plugin at three different levels:
 
-The lower the level the higher its priority, meaning: if you configure a Connect host in your global settings, but override it in your particular job, then the Connect host configured at the job level will be used. In your configuration (may it be global, folder or job) you see the following screen:
+- **Global**: Add to your global configuration. Impacts all folders and jobs.
+- **Folder**: Configuration applies to the folder where your job is running.
+- **Job level**: Configure the plugin either on your freestyle project job or directly in the Jenkinsfile. Applies only to that job.
+
+The lower the level, the higher its priority. If you configure a Connect server host in your global settings, but override it in a particular job, the Connect host configured at the job level will be used. 
+
+### Configuration options
+
+On your Jenkins configuration page, you'll see the following options:
+
+| Setting              | Description                                                                                              |
+|----------------------|----------------------------------------------------------------------------------------------------------|
+| `Connect Host`       | The host where the Connect server is deployed.                                                           |
+| `Connect Credential` | A `Secret text` credential type that contains the 1Password Connect Token to get secrets from 1Password. |
+| `1Password CLI path` | The path to the 1Password CLI binary.                                                                    |
 
 ![Global config](docs/images/plugin-config.png)
 
-You can configure the following:
-- `Connect Host`: the host where Connect has been deployed
-- `Connect Credential`: a `Secret text` credential type that contains the 1Password Connect Token to get secrets from 1Password
-- `1Password CLI path`: path to the 1Password CLI binary
-
-This image below shows how to create the Connect Credential:
+Create a Connect Credential by clicking Add next to Connect Token:
 
 ![Secret text credential](docs/images/secret-text-credential.png)
 
-### Usage in Freestyle Jobs
+## Usage
 
-If you still use free style jobs (hint: you should consider migrating to [Jenkinsfile](https://jenkins.io/doc/book/pipeline/)), you can set up both the [config](#configuration) and the secrets you need on the job level.
+### With a Jenkinsfile
 
-![Freestyle project](docs/images/freestyle-project.png)
+To access secrets within the Jenkins pipeline, use the `withSecrets` function. This function receives the configuration and list of 1Password secrets to be loaded as parameters.
 
-For adding a secret, you can press the `Add a 1Password secret` and then complete the following fields:
-- `Environment variable` - the name of the environment variable that will contain the loaded secret
-- `Secret reference` - the 1Password secret reference in format `op://<vault>/<item>[/section]/<field>`
-
-The secrets are available as environment variables.
-
-### Usage via Jenkinsfile
-
-To be able to use the secrets within the pipeline, you need to use the function `withSecrets`, which as parameters gets the config and the list of secrets to be loaded form 1Password.
+Here's an example of a declarative Jenkinsfile:
 
 ```groovy
 // (Optional) Define the configuration values for your Connect Instance.
@@ -213,15 +213,21 @@ node {
 ```
 </details>
 
-Whenever in doubt, you can use the `Pypeline Syntax` helper from Jenkins.
+You can use the Jenkins Pipeline Syntax helper to generate a pipeline script, if you prefer.
 
 ![Pipeline syntax generator](docs/images/pipeline-syntax-generator.png)
 
-### Usage with environment variables
+### With environment variables
 
-This plugin also enables you to get the config and the secrets from environment variables.
+The plugin also allows you to use environment variables to get configuration and secrets.
 
-For the config, you need to set up `OP_CONNECT_HOST`, `OP_CONNECT_TOKEN`, and `OP_CLI_PATH` as environment variables.
+For the configuration, you need to set up the following environment variables:
+
+- `OP_CONNECT_HOST`
+- `OP_CONNECT_TOKEN`
+- `OP_CLI_PATH`
+
+Here's an example configuration in a declarative Jenkinsfile:
 
 ```groovy
 pipeline {
@@ -298,11 +304,26 @@ node {
 ```
 </details>
 
-See the [examples](./docs/examples) directory for more examples and use cases.
+### In Freestyle Jobs
 
-## Requirements:
+If you use freestyle jobs, consider migrating to [Jenkinsfile](https://jenkins.io/doc/book/pipeline/)), With Jenkinsfile, you can set up both the [configuration](#configuration) and the secrets you need at the job level.
+
+![Freestyle project](docs/images/freestyle-project.png)
+
+To add a secret to your Freestyle job, click the "Add a 1Password secret" button in the 1Password Secrets section, then fill out the following fields:
+
+| Field                  | Description                                                                                                                                                                       |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Environment variable` | The name of the environment variable that will contain the loaded secret.                                                                                                         |
+| `Secret reference`     | The 1Password secret reference using [secret reference syntax](https://developer.1password.com/docs/cli/secrets-reference-syntax): <br /> `op://<vault>/<item>[/section]/<field>` |
+
+The secrets are available as environment variables.
+
+[//]: # (See the [examples]&#40;./docs/examples&#41; directory for more examples and use cases.)
+
+## Requirements
 * Maven > 3.3.9
-* Oracle JDK 1.8
+* Oracle JDK 11 or higher 
 
 ## Security
 
