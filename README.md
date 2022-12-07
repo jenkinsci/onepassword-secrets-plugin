@@ -295,7 +295,7 @@ The secrets are available as environment variables.
 
 Please file requests via [**BugCrowd**](https://bugcrowd.com/agilebits).
 
-For information about security practices, please visit our [Security homepage]([https://bugcrowd.com/agilebits](https://1password.com/security)).
+For information about security practices, please visit our [Security homepage](https://1password.com/security).
 
 ## Getting help
 
