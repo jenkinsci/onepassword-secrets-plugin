@@ -3,6 +3,8 @@
 
 This plugin loads secrets from [1Password Connect](https://1password.com/secrets/) as environment variables into the Jenkins pipeline. The loaded secrets can only be accessed witin the scope of the plugin.
 
+Read more on the [1Password Developer Portal](https://developer.1password.com/ci-cd/jenkins).
+
 ## Prerequisites
 - [1Password Connect](https://support.1password.com/secrets-automation/#step-2-deploy-a-1password-connect-server) deployed in your infrastructure.
 
@@ -19,53 +21,7 @@ rm op.zip
 
 If you plan to install 1Password CLI in the same pipeline where you'll use the plugin, you need to add the installation script before you make any calls to the plugin.
 
-```groovy
-pipeline {
-    agent any
-    stages {
-        stage('Install 1Password CLI') {
-            sh '''
-            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.8.0/op_linux_amd64_v2.8.0.zip
-            unzip -o op.zip
-            rm op.zip
-            '''
-        }
-        stage('you can make calls to the 1Password plugin here') {
-            // add what to do in this stage
-        }
-    }
-}
-```
-
-<details>
-<summary><b>Scripted Jenkinsfile</b></summary>
-
-```groovy
-
-node {
-    stage('Install 1Password CLI') {
-        sh '''
-        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.8.0/op_linux_amd64_v2.8.0.zip
-        unzip -o op.zip
-        rm op.zip
-        '''
-    }
-    stage('you can make calls to the 1Password plugin here') {
-        // add what to do in this stage
-    }
-}
-```
-
-</details>
-
 If you install 1Password CLI in a separate build, you need to set the `1Password CLI path` to the workspace where you performed the installation in you [configuration](#configuration).
-
-<details>
-<summary><b> Example installation via Freestyle Project</b></summary>
-
-![Install CLI via Freestyle Project](docs/images/install-cli-freestyle.png)
-
-</details>
 
 <details>
 <summary><b>Example installation via pipeline script</b></summary>
@@ -87,8 +43,7 @@ pipeline {
 }
 ```
 
-<details>
-<summary><i>Scripted Jenkinsfile</i></summary>
+*Scripted Jenkinsfile*
 
 ```groovy
 node {
@@ -102,6 +57,12 @@ node {
 }
 ```
 </details>
+
+<details>
+<summary><b> Example installation via Freestyle Project</b></summary>
+
+![Install CLI via Freestyle Project](docs/images/install-cli-freestyle.png)
+
 </details>
 
 See the most recent [1Password CLI release](https://app-updates.agilebits.com/product_history/CLI2).
@@ -125,6 +86,9 @@ On your Jenkins configuration page, you'll see the following options:
 | `Connect Host`       | The host where the Connect server is deployed.                                                           |
 | `Connect Credential` | A `Secret text` credential type that contains the 1Password Connect Token to get secrets from 1Password. |
 | `1Password CLI path` | The path to the 1Password CLI binary.                                                                    |
+
+
+Jenkins 1Password Secrets configuration interface:
 
 ![Global config](docs/images/plugin-config.png)
 
@@ -331,7 +295,7 @@ The secrets are available as environment variables.
 
 Please file requests via [**BugCrowd**](https://bugcrowd.com/agilebits).
 
-For information about security practices, please visit our [Security homepage](https://bugcrowd.com/agilebits).
+For information about security practices, please visit our [Security homepage](https://1password.com/security).
 
 ## Getting help
 
