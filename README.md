@@ -10,7 +10,7 @@ Read more on the [1Password Developer Portal](https://developer.1password.com/ci
 
 ## Install the 1Password CLI
 
-This plugin relies on the 1Password CLI. You need to [Install 1Password CLI](http://localhost:3010/docs/cli/get-started#install) on your host machine.
+This plugin relies on the 1Password CLI. You need to [Install 1Password CLI](http://developer.1password.com/docs/cli/get-started#install) on your host machine.
 
 Here's an example script to install the 1Password CLI version `2.8.0` on a Linux `amd64` host:
 ```shell
