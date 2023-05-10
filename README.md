@@ -74,7 +74,7 @@ node {
 
 See the most recent [1Password CLI release](https://app-updates.agilebits.com/product_history/CLI2).
 
-**NOTE:** If you want to use Service Accounts, then you'll need to install the latest beta version of the 1Password CLI (`2.16.0-beta.01` or later).
+**NOTE:** If you want to use Service Accounts, then you'll need to install the latest version of the 1Password CLI (`2.18.0` or later).
 
 ## Configuration
 
