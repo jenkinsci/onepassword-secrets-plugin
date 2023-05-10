@@ -11,7 +11,7 @@
         <c:select/>
     </f:entry>
 
-    <f:entry field="serviceAccountCredentialId" title="Service Account Credential [BETA]">
+    <f:entry field="serviceAccountCredentialId" title="Service Account Credential">
         <c:select/>
     </f:entry>
 
