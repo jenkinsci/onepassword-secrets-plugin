@@ -11,7 +11,7 @@ If you're using 1Password Connect, then you'll need to:
 - [Set up a Secrets Automation workflow](https://developer.1password.com/docs/connect/get-started#step-1-set-up-a-secrets-automation-workflow).
 - [Deploy 1Password Connect](https://developer.1password.com/docs/connect/get-started#step-2-deploy-1password-connect-server) in your infrastructure.
 
-If you're using 1Password Service Accounts <sup>BETA</sup>, then you'll need to [create a service account](https://developer.1password.com//docs/service-accounts/).
+If you're using 1Password Service Accounts, then you'll need to [create a service account](https://developer.1password.com//docs/service-accounts/).
 
 ## Install the 1Password CLI
 
@@ -74,7 +74,7 @@ node {
 
 See the most recent [1Password CLI release](https://app-updates.agilebits.com/product_history/CLI2).
 
-**NOTE:** If you want to use Service Accounts <sup>BETA</sup>, then you'll need to install the latest beta version of the 1Password CLI (`2.16.0-beta.01` or later).
+**NOTE:** If you want to use Service Accounts, then you'll need to install the latest version of the 1Password CLI (`2.18.0` or later).
 
 ## Configuration
 
@@ -107,7 +107,7 @@ Create a Connect Credential by clicking Add next to Connect Token:
 
 ![Secret text credential - Connect](docs/images/secret-text-credential-connect.png)
 
-or Create a Service Account <sup>BETA</sup> Credential by clicking Add next to Service Account Token:
+or Create a Service Account Credential by clicking Add next to Service Account Token:
 ![Secret text credential - Service Account](docs/images/secret-text-credential-sa.png)
 
 ## Usage
@@ -192,7 +192,7 @@ node {
 
 </details>
 
-Here's an example of a declarative Jenkinsfile in which we configure to use Service Accounts <sup>BETA</sup>:
+Here's an example of a declarative Jenkinsfile in which we configure to use Service Accounts:
 
 ```groovy
 // (Optional) Define the service account token that will be used.
@@ -358,7 +358,7 @@ node {
 
 </details>
 
-Here's an example configuration for Service Accounts <sup>BETA</sup> in a declarative Jenkinsfile:
+Here's an example configuration for Service Accounts in a declarative Jenkinsfile:
 
 ```groovy
 pipeline {
