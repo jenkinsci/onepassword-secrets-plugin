@@ -23,6 +23,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class OnePasswordAccessor implements Serializable {
 
@@ -126,7 +127,7 @@ public class OnePasswordAccessor implements Serializable {
                 Process pr = pb.command(commands).start();
                 BufferedReader stdInput = new BufferedReader(new InputStreamReader(pr.getInputStream(), StandardCharsets.UTF_8));
                 BufferedReader stdError = new BufferedReader(new InputStreamReader(pr.getErrorStream(), StandardCharsets.UTF_8));
-                String secretValue = stdInput.readLine();
+                String secretValue = stdInput.lines().collect(Collectors.joining(System.lineSeparator()));
                 if (StringUtils.isBlank(secretValue)) {
                     String s;
                     StringBuilder errorMessage = new StringBuilder();

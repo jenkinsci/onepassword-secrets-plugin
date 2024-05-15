@@ -67,6 +67,20 @@ public class OnePasswordWithSecretsTest {
     }
 
     @Test
+    public void testSecretsMultiline() throws Exception {
+        WorkflowJob project = j.createProject(WorkflowJob.class);
+        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsMultiline.groovy",
+                Charset.defaultCharset())
+                .replace("OP_HOST", TEST_CONNECT_HOST)
+                .replace("OP_CLI_URL",OP_CLI_URL),
+                true));
+
+        WorkflowRun build = j.buildAndAssertSuccess(project);
+        j.assertLogContains(TEST_SUCCESS, build);
+        j.assertLogNotContains(TEST_FAILURE, build);
+    }
+
+    @Test
     public void testSecretsFromEnv() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsFromEnv.groovy",
