@@ -120,4 +120,19 @@ public class OnePasswordWithSecretsTest {
         WorkflowRun build = j.buildAndAssertSuccess(project);
         j.assertLogNotContains(TEST_SECRET, build);
     }
+
+    @Test
+    public void testSecretsMultilineMasked() throws Exception {
+        WorkflowJob project = j.createProject(WorkflowJob.class);
+        project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsMultilineMasked.groovy",
+                Charset.defaultCharset())
+                .replace("OP_HOST", TEST_CONNECT_HOST)
+                .replace("OP_CLI_URL", OP_CLI_URL),
+                true));
+
+        WorkflowRun build = j.buildAndAssertSuccess(project);
+        j.assertLogNotContains("-----BEGIN PRIVATE KEY-----", build);
+        j.assertLogNotContains("RGVhciBzZWN1cml0eSByZXNlYXJjaGVyLApXaGls", build);
+        j.assertLogNotContains("-----END PRIVATE KEY-----", build);
+    }
 }
