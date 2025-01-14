@@ -11,7 +11,7 @@ If you're using 1Password Connect, then you'll need to:
 - [Set up a Secrets Automation workflow](https://developer.1password.com/docs/connect/get-started#step-1-set-up-a-secrets-automation-workflow).
 - [Deploy 1Password Connect](https://developer.1password.com/docs/connect/get-started#step-2-deploy-1password-connect-server) in your infrastructure.
 
-If you're using 1Password Service Accounts, then you'll need to [create a service account](https://developer.1password.com//docs/service-accounts/).
+If you're using 1Password Service Accounts, then you'll need to [create a service account](https://developer.1password.com/docs/service-accounts/).
 
 ## Install the 1Password CLI
 
