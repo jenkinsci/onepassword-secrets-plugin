@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /* The class is borrowed from https://github.com/jenkinsci/hashicorp-vault-plugin/ */
 public class MaskingConsoleLogFilter extends ConsoleLogFilter
@@ -38,7 +40,12 @@ public class MaskingConsoleLogFilter extends ConsoleLogFilter
 
             @Override
             protected void eol(byte[] b, int len) throws IOException {
-                p = Pattern.compile(getPatternStringForSecrets(valuesToMask));
+                List<String> splitValuesToMask = new ArrayList<String>();
+                for (String valueToMask : valuesToMask) {
+                    List<String> splitValues = new ArrayList<String>(Arrays.asList(valueToMask.split("\n")));
+                    splitValuesToMask.addAll(splitValues);
+                }
+                p = Pattern.compile(getPatternStringForSecrets(splitValuesToMask));
                 if (StringUtils.isBlank(p.pattern())) {
                     logger.write(b, 0, len);
                     return;
