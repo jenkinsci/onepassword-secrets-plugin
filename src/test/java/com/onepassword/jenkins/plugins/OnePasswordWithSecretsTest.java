@@ -9,20 +9,20 @@ import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static com.onepassword.jenkins.plugins.util.TestConstants.*;
 
-public class OnePasswordWithSecretsTest {
+@WithJenkins
+class OnePasswordWithSecretsTest {
 
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
+    private JenkinsRule j;
 
     private final String basePath = "src/test/resources/com/onepassword/jenkins/plugins/pipeline/";
 
@@ -31,8 +31,9 @@ public class OnePasswordWithSecretsTest {
                     CredentialsScope.GLOBAL, "connect-credential-id",
                     "1Password Connect Credential", Secret.fromString(System.getenv("OP_TOKEN")));
 
-    @Before
-    public void init() throws IOException {
+    @BeforeEach
+    void init(JenkinsRule j) throws IOException {
+        this.j = j;
         CredentialsProvider.lookupStores(j.jenkins)
                 .iterator()
                 .next()
@@ -40,7 +41,7 @@ public class OnePasswordWithSecretsTest {
     }
 
     @Test
-    public void testSecretsFunction() throws Exception {
+    void testSecretsFunction() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsFunction.groovy",
                 Charset.defaultCharset())
@@ -53,7 +54,7 @@ public class OnePasswordWithSecretsTest {
     }
 
     @Test
-    public void testSecretsPipeline() throws Exception {
+    void testSecretsPipeline() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsPipeline.groovy",
                 Charset.defaultCharset())
@@ -67,7 +68,7 @@ public class OnePasswordWithSecretsTest {
     }
 
     @Test
-    public void testSecretsMultiline() throws Exception {
+    void testSecretsMultiline() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsMultiline.groovy",
                 Charset.defaultCharset())
@@ -81,7 +82,7 @@ public class OnePasswordWithSecretsTest {
     }
 
     @Test
-    public void testSecretsFromEnv() throws Exception {
+    void testSecretsFromEnv() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsFromEnv.groovy",
                 Charset.defaultCharset())
@@ -95,7 +96,7 @@ public class OnePasswordWithSecretsTest {
     }
 
     @Test
-    public void testSecretsWrongReference() throws Exception {
+    void testSecretsWrongReference() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsWrongReference.groovy",
                 Charset.defaultCharset())
@@ -109,7 +110,7 @@ public class OnePasswordWithSecretsTest {
     }
 
     @Test
-    public void testSecretsMasked() throws Exception {
+    void testSecretsMasked() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsMasked.groovy",
                 Charset.defaultCharset())
@@ -122,7 +123,7 @@ public class OnePasswordWithSecretsTest {
     }
 
     @Test
-    public void testSecretsMultilineMasked() throws Exception {
+    void testSecretsMultilineMasked() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testSecretsMultilineMasked.groovy",
                 Charset.defaultCharset())

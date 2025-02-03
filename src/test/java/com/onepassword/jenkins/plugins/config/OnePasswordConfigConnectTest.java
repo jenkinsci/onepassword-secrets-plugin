@@ -10,20 +10,20 @@ import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static com.onepassword.jenkins.plugins.util.TestConstants.*;
 
-public class OnePasswordConfigConnectTest {
+@WithJenkins
+class OnePasswordConfigConnectTest {
 
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
+    private JenkinsRule j;
 
     private final String basePath = "src/test/resources/com/onepassword/jenkins/plugins/config/connect/";
 
@@ -32,8 +32,9 @@ public class OnePasswordConfigConnectTest {
                     CredentialsScope.GLOBAL, "connect-credential-id",
                     "1Password Connect Credential", Secret.fromString(System.getenv("OP_TOKEN")));
 
-    @Before
-    public void init() throws IOException {
+    @BeforeEach
+    void init(JenkinsRule j) throws IOException {
+        this.j = j;
         CredentialsProvider.lookupStores(j.jenkins)
                 .iterator()
                 .next()
@@ -41,7 +42,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigFunction() throws Exception {
+    void testConfigFunction() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigFunction.groovy",
                 Charset.defaultCharset())
@@ -55,7 +56,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigPipeline() throws Exception {
+    void testConfigPipeline() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigPipeline.groovy",
                 Charset.defaultCharset())
@@ -69,7 +70,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigGlobal() throws Exception {
+    void testConfigGlobal() throws Exception {
         OnePasswordGlobalConfig globalConfig = GlobalConfiguration.all().get(OnePasswordGlobalConfig.class);
         OnePasswordConfig config = new OnePasswordConfig();
         config.setConnectHost(TEST_CONNECT_HOST);
@@ -93,7 +94,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigMergeHost() throws Exception {
+    void testConfigMergeHost() throws Exception {
         OnePasswordGlobalConfig globalConfig = GlobalConfiguration.all().get(OnePasswordGlobalConfig.class);
         OnePasswordConfig config = new OnePasswordConfig();
         config.setConnectHost(TEST_CONNECT_HOST);
@@ -115,7 +116,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigMergeTokenId() throws Exception {
+    void testConfigMergeTokenId() throws Exception {
         OnePasswordGlobalConfig globalConfig = GlobalConfiguration.all().get(OnePasswordGlobalConfig.class);
         OnePasswordConfig config = new OnePasswordConfig();
         config.setConnectCredentialId("connect-credential-id");
@@ -138,7 +139,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigFromEnv() throws Exception {
+    void testConfigFromEnv() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigFromEnv.groovy",
                 Charset.defaultCharset())
@@ -152,7 +153,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigPriorityHost() throws Exception {
+    void testConfigPriorityHost() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigPriorityHost.groovy",
                 Charset.defaultCharset())
@@ -166,7 +167,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigPriorityToken() throws Exception {
+    void testConfigPriorityToken() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigPriorityToken.groovy",
                 Charset.defaultCharset())
@@ -180,7 +181,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigNoHost() throws Exception {
+    void testConfigNoHost() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigNoHost.groovy",
                 Charset.defaultCharset())
@@ -194,7 +195,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigNoToken() throws Exception {
+    void testConfigNoToken() throws Exception {
         CredentialsProvider.lookupStores(j.jenkins)
                 .iterator()
                 .next()
@@ -212,7 +213,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigNoConfig() throws Exception {
+    void testConfigNoConfig() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigNoConfig.groovy",
                 Charset.defaultCharset())
@@ -226,7 +227,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigNoSpecifiedToken() throws Exception {
+    void testConfigNoSpecifiedToken() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigNoSpecifiedToken.groovy",
                 Charset.defaultCharset())
@@ -240,7 +241,7 @@ public class OnePasswordConfigConnectTest {
     }
 
     @Test
-    public void testConfigWrongHost() throws Exception {
+    void testConfigWrongHost() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigWrongHost.groovy",
                 Charset.defaultCharset())

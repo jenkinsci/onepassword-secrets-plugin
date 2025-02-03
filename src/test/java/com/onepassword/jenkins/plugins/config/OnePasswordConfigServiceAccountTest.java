@@ -10,20 +10,20 @@ import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static com.onepassword.jenkins.plugins.util.TestConstants.*;
 
-public class OnePasswordConfigServiceAccountTest {
+@WithJenkins
+class OnePasswordConfigServiceAccountTest {
 
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
+    private JenkinsRule j;
 
     private final String basePath = "src/test/resources/com/onepassword/jenkins/plugins/config/serviceaccount/";
     private final String serviceAccountCredentialId = "service-account-credential-id";
@@ -33,8 +33,9 @@ public class OnePasswordConfigServiceAccountTest {
                     CredentialsScope.GLOBAL, serviceAccountCredentialId,
                     "1Password Service Account Credential", Secret.fromString(System.getenv("OP_SA_TOKEN")));
 
-    @Before
-    public void init() throws IOException {
+    @BeforeEach
+    void init(JenkinsRule j) throws IOException {
+        this.j = j;
         CredentialsProvider.lookupStores(j.jenkins)
                 .iterator()
                 .next()
@@ -42,7 +43,7 @@ public class OnePasswordConfigServiceAccountTest {
     }
 
     @Test
-    public void testConfigFunction() throws Exception {
+    void testConfigFunction() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigFunction.groovy",
                 Charset.defaultCharset())
@@ -55,7 +56,7 @@ public class OnePasswordConfigServiceAccountTest {
     }
 
     @Test
-    public void testConfigPipeline() throws Exception {
+    void testConfigPipeline() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigPipeline.groovy",
                 Charset.defaultCharset())
@@ -68,7 +69,7 @@ public class OnePasswordConfigServiceAccountTest {
     }
 
     @Test
-    public void testConfigGlobal() throws Exception {
+    void testConfigGlobal() throws Exception {
         OnePasswordGlobalConfig globalConfig = GlobalConfiguration.all().get(OnePasswordGlobalConfig.class);
         OnePasswordConfig config = new OnePasswordConfig();
         config.setServiceAccountCredentialId(serviceAccountCredentialId);
@@ -91,7 +92,7 @@ public class OnePasswordConfigServiceAccountTest {
     }
 
     @Test
-    public void testConfigMergeTokenId() throws Exception {
+    void testConfigMergeTokenId() throws Exception {
         OnePasswordGlobalConfig globalConfig = GlobalConfiguration.all().get(OnePasswordGlobalConfig.class);
         OnePasswordConfig config = new OnePasswordConfig();
         config.setServiceAccountCredentialId(serviceAccountCredentialId);
@@ -113,7 +114,7 @@ public class OnePasswordConfigServiceAccountTest {
     }
 
     @Test
-    public void testConfigFromEnv() throws Exception {
+    void testConfigFromEnv() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigFromEnv.groovy",
                 Charset.defaultCharset())
@@ -126,7 +127,7 @@ public class OnePasswordConfigServiceAccountTest {
     }
 
     @Test
-    public void testConfigPriorityToken() throws Exception {
+    void testConfigPriorityToken() throws Exception {
         WorkflowJob project = j.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(readFile(basePath + "testConfigPriorityToken.groovy",
                 Charset.defaultCharset())
@@ -139,7 +140,7 @@ public class OnePasswordConfigServiceAccountTest {
     }
 
     @Test
-    public void testConfigNoToken() throws Exception {
+    void testConfigNoToken() throws Exception {
         CredentialsProvider.lookupStores(j.jenkins)
                 .iterator()
                 .next()
