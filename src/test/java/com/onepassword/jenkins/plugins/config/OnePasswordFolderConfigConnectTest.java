@@ -9,20 +9,20 @@ import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static com.onepassword.jenkins.plugins.util.TestConstants.*;
 
-public class OnePasswordFolderConfigConnectTest {
+@WithJenkins
+class OnePasswordFolderConfigConnectTest {
 
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
+    private JenkinsRule j;
 
     private final String basePath = "src/test/resources/com/onepassword/jenkins/plugins/config/connect/";
 
@@ -31,8 +31,9 @@ public class OnePasswordFolderConfigConnectTest {
                     CredentialsScope.GLOBAL, "connect-credential-id",
                     "1Password Connect Credential", Secret.fromString(System.getenv("OP_TOKEN")));
 
-    @Before
-    public void init() throws IOException {
+    @BeforeEach
+    void init(JenkinsRule j) throws IOException {
+        this.j = j;
         CredentialsProvider.lookupStores(j.jenkins)
                 .iterator()
                 .next()
@@ -40,7 +41,7 @@ public class OnePasswordFolderConfigConnectTest {
     }
 
     @Test
-    public void testConfigFolder() throws Exception {
+    void testConfigFolder() throws Exception {
         Folder folder = j.createProject(Folder.class);
         OnePasswordConfig config = new OnePasswordConfig();
         config.setConnectHost(TEST_CONNECT_HOST);
