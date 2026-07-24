@@ -66,6 +66,23 @@ public class OnePasswordCredentialsProviderTest {
     }
 
     @Test
+    public void configRoundTripsAndDrivesCacheDuration() {
+        OnePasswordCredentialsProviderConfig config = OnePasswordCredentialsProviderConfig.getInstance();
+        config.setEnabled(true);
+        config.setVault("my-vault");
+        config.setTag("jenkins");
+
+        assertTrue(config.isEnabled());
+        org.junit.Assert.assertEquals("my-vault", config.getVault());
+        org.junit.Assert.assertEquals("jenkins", config.getTag());
+
+        config.setCache(true);
+        org.junit.Assert.assertEquals(OnePasswordCredentialsProviderConfig.DEFAULT_CACHE, config.getCacheDuration());
+        config.setCache(false);
+        org.junit.Assert.assertEquals(OnePasswordCredentialsProviderConfig.NO_CACHE, config.getCacheDuration());
+    }
+
+    @Test
     public void storeIsListedAmongJenkinsStores() {
         boolean found = false;
         for (CredentialsStore store : CredentialsProvider.lookupStores(j.jenkins)) {
