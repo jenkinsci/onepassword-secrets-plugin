@@ -451,6 +451,55 @@ The secrets are available as environment variables.
 
 [//]: # "See the [examples](./docs/examples) directory for more examples and use cases."
 
+## Native Jenkins credentials (Credentials Provider)
+
+The `withSecrets` step and environment-variable loading described above resolve
+secrets **at build time**. Some parts of Jenkins, however, look a credential up
+**by id** outside of any build — SCM checkout of a pipeline library, cloud agent
+provisioning, or webhook-signature validation. For those, the plugin can also act
+as a read-only [Credentials Provider](https://github.com/jenkinsci/onepassword-secrets-plugin/issues/11):
+1Password items are surfaced as native Jenkins credentials, selectable anywhere a
+credential is chosen, while the secret value stays in 1Password and is fetched
+on demand (never stored in Jenkins).
+
+### How it works
+
+- The provider enumerates a single 1Password **vault** and exposes each eligible
+  item as a credential. The Jenkins credential **id** is the item **title**, so an
+  item titled `deploy-token` is referenced in Jenkins as
+  `credentialsId: "deploy-token"`.
+- The item's **category** determines the Jenkins credential type:
+
+  | 1Password category | Jenkins credential      | Field read                 |
+  | ------------------ | ----------------------- | -------------------------- |
+  | `Login`            | Username with password  | `username` + `password`    |
+  | `Password`         | Secret text             | `password`                 |
+  | `API Credential`   | Secret text             | `credential`               |
+  | `Secure Note`      | Secret text             | `notesPlain`               |
+
+  Other categories (SSH keys, documents, certificates, ...) are ignored for now.
+- Only items carrying an opt-in **tag** (default `jenkins`) are exposed, so a whole
+  vault is never published to Jenkins by accident. The item listing is cached for
+  five minutes; individual secret values are always fetched fresh when used.
+- Authentication reuses the same Connect / Service Account configuration and `op`
+  CLI as the rest of the plugin. The Connect / Service Account **token** credential
+  must live in the Jenkins system credentials store.
+
+### Enable it
+
+Under **Manage Jenkins → System → 1Password Credentials Provider**, tick
+_Expose 1Password items as Jenkins credentials_, set the **Vault**, and (optionally)
+adjust the **Tag** gate. Via [JCasC](https://plugins.jenkins.io/configuration-as-code/):
+
+```yaml
+unclassified:
+  onePasswordCredentialsProvider:
+    enabled: true
+    vault: "my-jenkins-vault"
+    tag: "jenkins"
+    cache: true
+```
+
 ## Requirements
 
 - Maven > 3.3.9
