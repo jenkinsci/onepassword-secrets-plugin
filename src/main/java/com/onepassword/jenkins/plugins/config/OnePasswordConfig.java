@@ -11,7 +11,6 @@ import hudson.model.Item;
 import hudson.security.ACL;
 import hudson.util.ListBoxModel;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.plaincredentials.StringCredentials;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -22,6 +21,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static hudson.Util.fixEmptyAndTrim;
+import hudson.Util;
 
 public class OnePasswordConfig extends AbstractDescribableImpl<OnePasswordConfig> implements Serializable {
 
@@ -51,16 +51,16 @@ public class OnePasswordConfig extends AbstractDescribableImpl<OnePasswordConfig
         }
 
         OnePasswordConfig result = new OnePasswordConfig(this);
-        if (StringUtils.isBlank(result.connectHost)) {
+        if (Util.fixEmptyAndTrim(result.connectHost) == null) {
             result.setConnectHost(parent.getConnectHost());
         }
-        if (StringUtils.isBlank(result.getConnectCredentialId())) {
+        if (Util.fixEmptyAndTrim(result.getConnectCredentialId()) == null) {
             result.setConnectCredentialId(parent.getConnectCredentialId());
         }
         if (result.connectCredential == null) {
             result.setConnectCredential(parent.getConnectCredential());
         }
-        if (StringUtils.isBlank(result.getServiceAccountCredentialId())) {
+        if (Util.fixEmptyAndTrim(result.getServiceAccountCredentialId()) == null) {
             result.setServiceAccountCredentialId(parent.getServiceAccountCredentialId());
         }
         if (result.serviceAccountCredential == null) {
