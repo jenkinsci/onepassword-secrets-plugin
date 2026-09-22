@@ -5,12 +5,12 @@ import hudson.Extension;
 import hudson.ExtensionPoint;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
-import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.Serializable;
 
 import static hudson.Util.fixEmptyAndTrim;
+import hudson.Util;
 
 public class OnePasswordSecret extends AbstractDescribableImpl<OnePasswordSecret>
         implements Serializable, ExtensionPoint {
@@ -24,7 +24,7 @@ public class OnePasswordSecret extends AbstractDescribableImpl<OnePasswordSecret
     }
 
     public String getEnvVar() {
-        return StringUtils.isEmpty(envVar) ? secretRef : envVar;
+        return Util.fixEmpty(envVar) == null ? secretRef : envVar;
     }
 
     public String getSecretRef() {
