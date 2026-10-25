@@ -33,6 +33,8 @@
         <!-- Fail the build on Commons Lang 2 imports: they compile and pass tests against the 2.555.3 baseline,
              but Commons Lang 2 is no longer in Jenkins core from 2.582 (see #28). The parent skips this check by default. -->
         <ban-commons-lang-2.skip>false</ban-commons-lang-2.skip>
+        <!-- All tests are JUnit 5; fail the build on new JUnit 4 imports. The parent skips this check by default. -->
+        <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
     </properties>
 
     <scm>
