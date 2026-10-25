@@ -1,12 +1,12 @@
 name: Maven CI for 1Password Connect Jenkins Plugin
 on: push
 
+permissions:
+  contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
-    env:
-      OP_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
-      OP_SA_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
     steps:
       - uses: actions/checkout@v7
       - name: Launch 1Password Connect instance
