@@ -453,8 +453,8 @@ The secrets are available as environment variables.
 
 ## Requirements
 
-- Maven > 3.3.9
-- Oracle JDK 11 or higher
+- Jenkins 2.555.3 or newer
+- To build the plugin: Maven 3.9.6 or newer and JDK 21 or 25
 
 ## Security
 
