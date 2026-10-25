@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.50</version>
+        <version>6.2236.v12dd4c483242</version>
         <relativePath />
     </parent>
 
@@ -23,12 +23,18 @@
     </licenses>
 
     <properties>
-        <revision>1.0.3</revision>
+        <revision>1.1.1</revision>
         <changelist>-SNAPSHOT</changelist>
         <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-        <jenkins.version>2.361.1</jenkins.version>
+        <jenkins.baseline>2.555</jenkins.baseline>
+        <jenkins.version>${jenkins.baseline}.3</jenkins.version>
         <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
         <exclude.tests>**/OnePassword*.java</exclude.tests>
+        <!-- Fail the build on Commons Lang 2 imports: they compile and pass tests against the 2.555.3 baseline,
+             but Commons Lang 2 is no longer in Jenkins core from 2.582 (see #28). The parent skips this check by default. -->
+        <ban-commons-lang-2.skip>false</ban-commons-lang-2.skip>
+        <!-- All tests are JUnit 5; fail the build on new JUnit 4 imports. The parent skips this check by default. -->
+        <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
     </properties>
 
     <scm>
@@ -42,8 +48,8 @@
         <dependencies>
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
-                <artifactId>bom-2.361.x</artifactId>
-                <version>1678.vc1feb_6a_3c0f1</version>
+                <artifactId>bom-${jenkins.baseline}.x</artifactId>
+                <version>7237.v5071b_f4589f1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -129,7 +135,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M7</version>
                 <configuration>
                     <excludes>
                         <exclude>${exclude.tests}</exclude>

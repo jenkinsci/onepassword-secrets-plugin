@@ -3,7 +3,6 @@ package com.onepassword.jenkins.plugins.log;
 import hudson.console.ConsoleLogFilter;
 import hudson.console.LineTransformationOutputStream;
 import hudson.model.Run;
-import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,6 +12,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import hudson.Util;
 
 /* The class is borrowed from https://github.com/jenkinsci/hashicorp-vault-plugin/ */
 public class MaskingConsoleLogFilter extends ConsoleLogFilter
@@ -38,8 +40,13 @@ public class MaskingConsoleLogFilter extends ConsoleLogFilter
 
             @Override
             protected void eol(byte[] b, int len) throws IOException {
-                p = Pattern.compile(getPatternStringForSecrets(valuesToMask));
-                if (StringUtils.isBlank(p.pattern())) {
+                List<String> splitValuesToMask = new ArrayList<String>();
+                for (String valueToMask : valuesToMask) {
+                    List<String> splitValues = new ArrayList<String>(Arrays.asList(valueToMask.split("\n")));
+                    splitValuesToMask.addAll(splitValues);
+                }
+                p = Pattern.compile(getPatternStringForSecrets(splitValuesToMask));
+                if (Util.fixEmptyAndTrim(p.pattern()) == null) {
                     logger.write(b, 0, len);
                     return;
                 }

@@ -11,7 +11,7 @@ If you're using 1Password Connect, then you'll need to:
 - [Set up a Secrets Automation workflow](https://developer.1password.com/docs/connect/get-started#step-1-set-up-a-secrets-automation-workflow).
 - [Deploy 1Password Connect](https://developer.1password.com/docs/connect/get-started#step-2-deploy-1password-connect-server) in your infrastructure.
 
-If you're using 1Password Service Accounts, then you'll need to [create a service account](https://developer.1password.com//docs/service-accounts/).
+If you're using 1Password Service Accounts, then you'll need to [create a service account](https://developer.1password.com/docs/service-accounts/).
 
 ## Install the 1Password CLI
 
@@ -21,10 +21,10 @@ If you plan to install 1Password CLI in the same pipeline where you'll use the p
 
 If you install 1Password CLI in a separate build, you need to set the `1Password CLI path` to the workspace where you performed the installation in your [configuration](#configuration).
 
-Here's an example script to install the 1Password CLI version `2.16.1` on a Linux `amd64` host:
+Here's an example script to install the 1Password CLI version `2.41.1` on a Linux `amd64` host:
 
 ```shell
-curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.16.1/op_linux_amd64_v2.16.1.zip
+curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_linux_amd64_v2.41.1.zip
 unzip -o op.zip
 rm op.zip
 ```
@@ -40,7 +40,7 @@ pipeline {
     stages {
         stage('Install 1Password CLI') {
             sh '''
-            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.16.1/op_linux_amd64_v2.16.1.zip
+            curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_linux_amd64_v2.41.1.zip
             unzip -o op.zip
             rm op.zip
             '''
@@ -55,7 +55,7 @@ _Scripted Jenkinsfile_
 node {
     stage('Install 1Password CLI') {
         sh '''
-        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.16.1/op_linux_amd64_v2.16.1.zip
+        curl -sSfLo op.zip https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_linux_amd64_v2.41.1.zip
         unzip -o op.zip
         rm op.zip
         '''
@@ -453,16 +453,14 @@ The secrets are available as environment variables.
 
 ## Requirements
 
-- Maven > 3.3.9
-- Oracle JDK 11 or higher
+- Jenkins 2.555.3 or newer
+- To build the plugin: Maven 3.9.6 or newer and JDK 21 or 25
 
 ## Security
 
 1Password requests you practice responsible disclosure if you discover a vulnerability.
 
-Please file requests through [**BugCrowd**](https://bugcrowd.com/agilebits).
-
-For information about our security practices, please visit the [1Password Security homepage](https://1password.com/security).
+Please file requests by sending an email to bugbounty@agilebits.com.
 
 ## Getting help
 
