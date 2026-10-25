@@ -13,7 +13,7 @@ import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-import javax.annotation.Nonnull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.Serializable;
 import java.util.*;
 
@@ -71,7 +71,7 @@ public class WithSecretsStep extends Step implements Serializable {
             return "withSecrets";
         }
 
-        @Nonnull
+        @NonNull
         @Override
         public String getDisplayName() {
             return "1Password Secrets";

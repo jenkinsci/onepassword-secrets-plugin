@@ -15,7 +15,6 @@ import hudson.model.Run;
 import hudson.security.ACL;
 import hudson.util.Secret;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.plaincredentials.StringCredentials;
 import org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl;
 
@@ -24,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import hudson.Util;
 
 public class OnePasswordAccessor implements Serializable {
 
@@ -86,24 +86,24 @@ public class OnePasswordAccessor implements Serializable {
         }
 
         if (serviceAccountCredential == null) {
-            if (connectCredential != null && StringUtils.isBlank(connectHost)) {
+            if (connectCredential != null && Util.fixEmptyAndTrim(connectHost) == null) {
                 throw new OnePasswordException("The Connect host is not configured - please provide the host to the Connect instance.");
-            } else if (!StringUtils.isBlank(connectHost) && connectCredential == null) {
+            } else if (Util.fixEmptyAndTrim(connectHost) != null && connectCredential == null) {
                 throw new OnePasswordException("The Connect credential is not configured - please provide the credential of the Connect instance.");
-            } else if (connectCredential == null && StringUtils.isBlank(connectHost)){
+            } else if (connectCredential == null && Util.fixEmptyAndTrim(connectHost) == null){
                 throw new OnePasswordException("No credential has been configured - please provide either the credential and host of the Connect instance or the credential of the Service Account Token.");
             }
         }
 
         String opCLIPath = config.getOpCLIPath();
-        if (StringUtils.isBlank(opCLIPath)) {
+        if (Util.fixEmptyAndTrim(opCLIPath) == null) {
             opCLIPath = envVars.get("WORKSPACE");
         }
 
         ProcessBuilder pb = new ProcessBuilder();
         Map<String, String> env = pb.environment();
 
-        if (!StringUtils.isBlank(connectHost)) {
+        if (Util.fixEmptyAndTrim(connectHost) != null) {
             env.putIfAbsent(envOPConnectHost, connectHost);
         }
         if (connectCredential != null) {
@@ -128,13 +128,13 @@ public class OnePasswordAccessor implements Serializable {
                 BufferedReader stdInput = new BufferedReader(new InputStreamReader(pr.getInputStream(), StandardCharsets.UTF_8));
                 BufferedReader stdError = new BufferedReader(new InputStreamReader(pr.getErrorStream(), StandardCharsets.UTF_8));
                 String secretValue = stdInput.lines().collect(Collectors.joining(System.lineSeparator()));
-                if (StringUtils.isBlank(secretValue)) {
+                if (Util.fixEmptyAndTrim(secretValue) == null) {
                     String s;
                     StringBuilder errorMessage = new StringBuilder();
                     while ((s = stdError.readLine()) != null) {
                         errorMessage.append(s).append("\n");
                     }
-                    if (StringUtils.isBlank(errorMessage.toString())) {
+                    if (Util.fixEmptyAndTrim(errorMessage.toString()) == null) {
                         throw new OnePasswordException("Secret with reference " + secret.getSecretRef() + "is empty.");
                     }
                     throw new OnePasswordException("Error retrieving secret " + secret.getSecretRef() + ":\n" + errorMessage + "\n");
@@ -177,7 +177,7 @@ public class OnePasswordAccessor implements Serializable {
     public static StringCredentials retrieveCredentials(Run build, Supplier<String> function) {
         if (Jenkins.getInstanceOrNull() != null) {
             String id = function.get();
-            if (StringUtils.isBlank(id)) {
+            if (Util.fixEmptyAndTrim(id) == null) {
                 return null;
             }
             List<StringCredentials> credentials = CredentialsProvider
@@ -201,14 +201,14 @@ public class OnePasswordAccessor implements Serializable {
         if (config == null) {
             config = buildConfig;
         } else if (buildConfig != null) {
-            if (buildConfig.hasConnectHost() && !StringUtils.isBlank(buildConfig.getConnectHost())) {
+            if (buildConfig.hasConnectHost() && Util.fixEmptyAndTrim(buildConfig.getConnectHost()) != null) {
                 config.setConnectHost(buildConfig.getConnectHost());
             }
-            if (buildConfig.hasConnectCredentialId() && !StringUtils.isBlank(buildConfig.getConnectCredentialId())) {
+            if (buildConfig.hasConnectCredentialId() && Util.fixEmptyAndTrim(buildConfig.getConnectCredentialId()) != null) {
                 config.setConnectCredentialId(buildConfig.getConnectCredentialId());
                 config.setConnectCredential(null);
             }
-            if (buildConfig.hasServiceAccountCredentialId() && !StringUtils.isBlank(buildConfig.getServiceAccountCredentialId())) {
+            if (buildConfig.hasServiceAccountCredentialId() && Util.fixEmptyAndTrim(buildConfig.getServiceAccountCredentialId()) != null) {
                 config.setServiceAccountCredentialId(buildConfig.getServiceAccountCredentialId());
                 config.setServiceAccountCredential(null);
             }
@@ -254,7 +254,7 @@ public class OnePasswordAccessor implements Serializable {
                 }
             }
 
-            if (StringUtils.isBlank(config.getConnectCredentialId())) {
+            if (Util.fixEmptyAndTrim(config.getConnectCredentialId()) == null) {
                 StringCredentialsImpl generatedCredentials = new StringCredentialsImpl(
                         CredentialsScope.GLOBAL,
                         GENERATED_CONNECT_TOKEN_ID,
@@ -276,7 +276,7 @@ public class OnePasswordAccessor implements Serializable {
                 }
             }
 
-            if (StringUtils.isBlank(config.getServiceAccountCredentialId())) {
+            if (Util.fixEmptyAndTrim(config.getServiceAccountCredentialId()) == null) {
                 StringCredentialsImpl generatedCredentials = new StringCredentialsImpl(
                         CredentialsScope.GLOBAL,
                         GENERATED_SERVICE_ACCOUNT_TOKEN_ID,
