@@ -121,8 +121,12 @@ public class OnePasswordAccessor implements Serializable {
         pb.directory(new File(opCLIPath));
 
         for (OnePasswordSecret secret : secrets) {
+
             logger.printf("Retrieving secret %s%n", secret.getEnvVar());
-            String[] commands = {opCLIPath + "/op", "read", secret.getSecretRef()};
+            String opCliExecutablePath = opCLIPath.toLowerCase().endsWith(".exe")
+                ? opCLIPath
+                : opCLIPath + "/op";
+            String[] commands = {opCliExecutablePath, "read", secret.getSecretRef()};
             try {
                 Process pr = pb.command(commands).start();
                 BufferedReader stdInput = new BufferedReader(new InputStreamReader(pr.getInputStream(), StandardCharsets.UTF_8));
